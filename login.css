@@ -1,0 +1,115 @@
+/* Reset básico para garantir que não haja margens/paddings indesejados */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Corpo da página */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+/* Cabeçalho */
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Estilos do formulário de login */
+.login-form {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form label {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 20px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.login-form input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+button {
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+.erro {
+    color: red;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Rodapé */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    .login-form {
+        padding: 20px;
+        width: 90%;
+        max-width: 100%;
+    }
+
+    .login-form input, button {
+        font-size: 1rem;
+    }
+
+    footer {
+        font-size: 0.8rem;
+    }
+}
