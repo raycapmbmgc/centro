@@ -119,6 +119,41 @@ header button:hover {
 .produto button:hover {
     background-color: #1e2a37;
 }
+.produto {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* <-- Essa linha centraliza tudo no eixo horizontal */
+    justify-content: space-between;
+}
+
+.produto img {
+    width: 150px;
+    height: 180px;
+    object-fit: contain;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    display: block;
+    margin-left: 25px; /* move um pouco pra direita */
+}
+.form-produto {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-produto input {
+    padding: 6px;
+    border: 1px solid #999;
+    border-radius: 4px;
+}
 
 /* Responsividade para telas menores */
 @media (max-width: 768px) {
