@@ -207,120 +207,106 @@ let produtos = [
     
 ];
 
-// Função para salvar os produtos no localStorage
-function salvarProdutosNoStorage() {
-    localStorage.setItem('produtos', JSON.stringify(produtos));  // Salva os produtos no localStorage
+
+// 🔄 Carrega produtos salvos no localStorage (se existirem)
+if (localStorage.getItem('produtos')) {
+    produtos = JSON.parse(localStorage.getItem('produtos'));
 }
 
-// Função para verificar se o administrador está logado
+function salvarProdutosNoStorage() {
+    localStorage.setItem('produtos', JSON.stringify(produtos));
+}
+
 function verificarAcessoAdmin() {
     if (!localStorage.getItem('adminLogado')) {
-        window.location.href = 'login.html';  // Redireciona para o login se não estiver logado
+        window.location.href = 'login.html';
     }
 }
 
-// Função para renderizar os produtos na tela do administrador
 function renderizarProdutosAdmin() {
-    const listaProdutosAdmin = document.getElementById('produtos-admin-lista');
-    listaProdutosAdmin.innerHTML = ''; // Limpa os produtos da tela antes de renderizar
+    const lista = document.getElementById('produtos-admin-lista');
+    lista.innerHTML = '';
 
     produtos.forEach(produto => {
-        const produtoDiv = document.createElement('div');
-        produtoDiv.classList.add('produto');
-        produtoDiv.innerHTML = `
+        const div = document.createElement('div');
+        div.classList.add('produto');
+
+        div.innerHTML = `
             <div>
                 <img src="${produto.imagem}" alt="${produto.nome}" class="produto-imagem">
                 <h3>${produto.nome}</h3>
                 <p><strong>Status:</strong> ${produto.disponivel ? 'Disponível' : 'Indisponível'}</p>
-            </div>
-
-            <!-- Botão para editar a descrição e o preço -->
-            <button onclick="editarDescricaoPreco(${produto.id})">Editar Descrição e Preço</button>
-
-            <!-- Botão para editar as cores e GBs -->
-            <button onclick="editarCorGB(${produto.id})">Editar Cores e GBs</button>
-
-            <!-- Mostrar Descrição, Preço, Cores e GBs apenas se definido -->
-            <div id="produto-${produto.id}-info" style="display: ${produto.disponivel ? 'block' : 'none'};">
                 <p><strong>Descrição:</strong> ${produto.descricao || 'Não definida'}</p>
                 <p><strong>Preço:</strong> ${produto.preco || 'Não definido'}</p>
-                <p><strong>Cores Disponíveis:</strong> ${produto.opcoes.cores.length > 0 ? produto.opcoes.cores.join(', ') : 'Não definido'}</p>
-                <p><strong>GBs Disponíveis:</strong> ${produto.opcoes.gbs.length > 0 ? produto.opcoes.gbs.join(', ') : 'Não definido'}</p>
+                <p><strong>Cores:</strong> ${produto.opcoes.cores.length ? produto.opcoes.cores.join(', ') : 'Não definido'}</p>
+                <p><strong>GBs:</strong> ${produto.opcoes.gbs.length ? produto.opcoes.gbs.join(', ') : 'Não definido'}</p>
             </div>
 
-            <!-- Botão para alternar a visibilidade do produto -->
+            <button onclick="toggleFormulario(${produto.id})">Atualizar</button>
+
+            <form id="form-${produto.id}" class="form-produto" style="display: none;" onsubmit="atualizarProduto(event, ${produto.id})">
+                <label>Descrição:</label>
+                <input type="text" name="descricao" value="${produto.descricao || ''}" required>
+
+                <label>Preço:</label>
+                <input type="text" name="preco" value="${produto.preco || ''}" required>
+
+                <label>Cores (separadas por vírgula):</label>
+                <input type="text" name="cores" value="${produto.opcoes.cores.join(', ')}">
+
+                <label>GBs (separados por vírgula):</label>
+                <input type="text" name="gbs" value="${produto.opcoes.gbs.join(', ')}">
+
+                <button type="submit">Salvar Alterações</button>
+            </form>
+
             <button onclick="toggleDisponibilidade(${produto.id})">
-                ${produto.disponivel ? 'Ocultar Produto' : 'Mostrar Produto'}
+                ${produto.disponivel ? 'Ocultar Produto (Cliente)' : 'Mostrar Produto (Cliente)'}
             </button>
         `;
-        listaProdutosAdmin.appendChild(produtoDiv);
+
+        lista.appendChild(div);
     });
 }
 
-// Função para alternar a disponibilidade do produto
-function toggleDisponibilidade(produtoId) {
-    const produto = produtos.find(p => p.id === produtoId);
-    produto.disponivel = !produto.disponivel;  // Alterna a disponibilidade
-
-    // Atualiza a exibição do produto
-    const infoDiv = document.getElementById(`produto-${produto.id}-info`);
-    const toggleButton = infoDiv.nextElementSibling;  // Encontra o botão de visibilidade
-
-    if (produto.disponivel) {
-        infoDiv.style.display = 'block';  // Mostra as informações
-        toggleButton.innerHTML = 'Ocultar Produto';  // Atualiza o texto do botão
-    } else {
-        infoDiv.style.display = 'none';  // Esconde as informações
-        toggleButton.innerHTML = 'Mostrar Produto';  // Atualiza o texto do botão
-    }
-
-    salvarProdutosNoStorage();  // Salva as alterações no localStorage
-    renderizarProdutosAdmin();  // Re-renderiza os produtos no painel administrativo
+function toggleFormulario(produtoId) {
+    const form = document.getElementById(`form-${produtoId}`);
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
 }
 
-// Função para editar a descrição e o preço do produto
-function editarDescricaoPreco(produtoId) {
+function atualizarProduto(event, produtoId) {
+    event.preventDefault();
+
+    const form = event.target;
     const produto = produtos.find(p => p.id === produtoId);
-    
-    const novaDescricao = prompt('Digite a nova descrição:', produto.descricao);
-    const novoPreco = prompt('Digite o novo preço:', produto.preco);
 
-    if (novaDescricao && novoPreco) {
-        produto.descricao = novaDescricao;
-        produto.preco = novoPreco;
-        salvarProdutosNoStorage();
-        renderizarProdutosAdmin(); // Re-renderiza os produtos
-    }
+    produto.descricao = form.descricao.value;
+    produto.preco = form.preco.value;
 
-    // Mostrar as informações editadas após a alteração
-    document.getElementById(`produto-${produto.id}-info`).style.display = 'block';
-}
+    const coresInput = form.cores.value.trim();
+    produto.opcoes.cores = coresInput ? coresInput.split(',').map(c => c.trim()) : [];
 
-// Função para editar as opções de cor e GB do produto
-function editarCorGB(produtoId) {
-    const produto = produtos.find(p => p.id === produtoId);
-    
-    // Editar cores
-    const novasCores = prompt('Digite as novas cores separadas por vírgula (ex: Preto, Branco, Azul):');
-    if (novasCores) {
-        produto.opcoes.cores = novasCores.split(',').map(cor => cor.trim());
-    }
-    
-    // Editar GBs
-    const novosGBs = prompt('Digite as novas opções de GB separadas por vírgula (ex: 64, 128, 256):');
-    if (novosGBs) {
-        produto.opcoes.gbs = novosGBs.split(',').map(gb => parseInt(gb.trim()));
-    }
+    const gbsInput = form.gbs.value.trim();
+    produto.opcoes.gbs = gbsInput ? gbsInput.split(',').map(g => parseInt(g.trim())) : [];
 
     salvarProdutosNoStorage();
-    renderizarProdutosAdmin(); // Re-renderiza os produtos
-
-    // Mostrar as informações editadas após a alteração
-    document.getElementById(`produto-${produto.id}-info`).style.display = 'block';
+    renderizarProdutosAdmin();
 }
 
-// Verificar se estamos na página do administrador
+function toggleDisponibilidade(produtoId) {
+    const produto = produtos.find(p => p.id === produtoId);
+    produto.disponivel = !produto.disponivel;
+    salvarProdutosNoStorage();
+    renderizarProdutosAdmin();
+}
+
+function logout() {
+    localStorage.removeItem('adminLogado');
+    window.location.href = 'index.html';
+}
+
+// Verifica se estamos na página do admin
 if (document.location.pathname.includes('admin.html')) {
-    verificarAcessoAdmin();  // Verifica se o admin está logado
-    renderizarProdutosAdmin();  // Renderiza os produtos administrativos
+    verificarAcessoAdmin();
+    renderizarProdutosAdmin();
 }
