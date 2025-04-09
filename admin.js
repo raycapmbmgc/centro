@@ -78,7 +78,7 @@ let produtos = [
         descricao: '',
         preco: '',
         disponivel: true,
-        imagem: 'imagens/iphone13.jpg',
+        imagem: 'imagens/iphone13.png',
         opcoes: {
             cores: [],
             gbs: []
@@ -114,7 +114,7 @@ let produtos = [
         descricao: '',
         preco: '',
         disponivel: true,
-        imagem: 'imagens/iphone14.jpg',
+        imagem: 'imagens/iphone14.png',
         opcoes: {
             cores: [],
             gbs: []
@@ -126,7 +126,7 @@ let produtos = [
         descricao: '',
         preco: '',
         disponivel: true,
-        imagem: 'imagens/iphone14promax.jpg',
+        imagem: 'imagens/iphone14pro.png',
         opcoes: {
             cores: [],
             gbs: []
@@ -138,7 +138,7 @@ let produtos = [
         descricao: '',
         preco: '',
         disponivel: true,
-        imagem: 'imagens/iphone14promax.jpg',
+        imagem: 'imagens/iphone14pro.png',
         opcoes: {
             cores: [],
             gbs: []
@@ -162,7 +162,7 @@ let produtos = [
         descricao: '',
         preco: '',
         disponivel: true,
-        imagem: 'imagens/iphone15pro.jpg',
+        imagem: 'imagens/iphone15pro.png',
         opcoes: {
             cores: [],
             gbs: []
@@ -174,7 +174,7 @@ let produtos = [
         descricao: '',
         preco: '',
         disponivel: true,
-        imagem: 'imagens/iphone15pro.jpg',
+        imagem: 'imagens/iphone15pro.png',
         opcoes: {
             cores: [],
             gbs: []
